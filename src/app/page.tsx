@@ -14,19 +14,22 @@ export default function ProfilePage() {
         <div className="space-y-1">
           <h1 className="text-2xl font-bold tracking-tight">이다영</h1>
           <p className="text-xs font-medium px-3 py-1 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 rounded-full inline-block">
-            한양대학교 대학생
+            주니어 개발자
           </p>
         </div>
 
         {/* Bio */}
         <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm md:text-base max-w-sm">
-          안녕하세요! 바이브 코딩을 배우고 있는 대학생입니다.
+          안녕하세요! 새로운 기술을 탐구하고 아이디어를 코드로 구현하는 개발자 이다영입니다. 문제 해결을 즐기며 더 나은 사용자 경험을 고민합니다.
         </p>
 
         {/* Action / Badges */}
         <div className="w-full pt-4 border-t border-slate-100 dark:border-zinc-800 flex justify-center items-center gap-3">
           <span className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-zinc-800 text-xs font-medium text-slate-700 dark:text-zinc-300">
-            💻 바이브 코딩
+            💻 웹 개발
+          </span>
+          <span className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-zinc-800 text-xs font-medium text-slate-700 dark:text-zinc-300">
+            🚀 문제 해결
           </span>
           <span className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-zinc-800 text-xs font-medium text-slate-700 dark:text-zinc-300">
             🎓 한양대
