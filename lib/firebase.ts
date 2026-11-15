@@ -5,7 +5,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore"; // Added Firestore import
+
 
 // Your web app's Firebase configuration
 // The API key is read from an environment variable for security.
