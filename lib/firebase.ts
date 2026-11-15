@@ -4,6 +4,8 @@
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore"; // Added Firestore import
 
 // Your web app's Firebase configuration
 // The API key is read from an environment variable for security.
@@ -20,3 +22,5 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
+export const db = getFirestore(app);
+export const db = getFirestore(app); // Export Firestore DB instance
