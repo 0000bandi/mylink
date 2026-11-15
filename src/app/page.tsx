@@ -1,27 +1,46 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
-  Heart,
-  Search,
-  Check,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarImage, AvatarFallback, AvatarBadge } from "@/components/ui/avatar";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
+import {
+  Sparkles,
+  Link2,
+  Share2,
   Copy,
-  ArrowRight,
+  Check,
   ExternalLink,
-  ChevronDown,
   Globe,
-  ShoppingBag,
+  Mail,
+  Plus,
+  Trash2,
+  GripVertical,
+  Heart,
+  Moon,
+  Sun,
+  Laptop,
+  GraduationCap,
+  TrendingUp,
+  LayoutDashboard,
+  Palette,
+  Smartphone,
+  Video,
 } from "lucide-react";
 
-function NikeSwoosh({ className = "w-14 h-6 text-[#111111]" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 120 42" fill="currentColor">
-      <path d="M117.8 0C100.2 13.9 83.1 23.3 64.9 28.3C49.9 32.4 34.6 32.7 20.3 27.6C12.7 24.9 6.3 20.8 1.4 15.3C0.3 14 0 13.5 0 14.7C0 17.5 2.7 23.1 6.5 27.3C13.2 34.7 22.8 39.4 34.6 41.2C45.2 42.8 57.6 41.3 71.5 36.7C88.6 31 104.9 20 119.5 4.3C120.4 3.3 120.2 2 119.5 1.1C119 0.5 118.4 0.1 117.8 0Z" />
-    </svg>
-  );
-}
-
-function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
+function GithubIcon({ className = "size-4" }: { className?: string }) {
   return (
     <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path
@@ -33,599 +52,587 @@ function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-export default function NikeProfilePage() {
-  const [likes, setLikes] = useState(1972); // 1972: Nike founded year easter egg
-  const [liked, setLiked] = useState(false);
-  const [copiedEmail, setCopiedEmail] = useState(false);
-  const [activeFilter, setActiveFilter] = useState("ALL STACKS");
+function YoutubeIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+    </svg>
+  );
+}
 
-  const handleLike = () => {
-    setLikes((prev) => prev + (liked ? -1 : 1));
-    setLiked(!liked);
-  };
+export default function MyLinkDesignSystemPage() {
+  const [isDark, setIsDark] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [likes, setLikes] = useState(128);
+  const [hasLiked, setHasLiked] = useState(false);
 
-  const handleCopyEmail = async () => {
+  // Link list state for dashboard & profile
+  const [links, setLinks] = useState([
+    {
+      id: "1",
+      title: "2026 포트폴리오 노션 페이지",
+      url: "https://notion.so/dayoung-portfolio",
+      icon: "📂",
+      isActive: true,
+      clicks: 432,
+    },
+    {
+      id: "2",
+      title: "GitHub 프로젝트 & 오픈소스",
+      url: "https://github.com/0000bandi",
+      icon: "💻",
+      isActive: true,
+      clicks: 318,
+    },
+    {
+      id: "3",
+      title: "Velog 기술 블로그 (트러블슈팅 & 회고)",
+      url: "https://velog.io",
+      icon: "📝",
+      isActive: true,
+      clicks: 254,
+    },
+    {
+      id: "4",
+      title: "커피챗 신청 & 협업 문의하기",
+      url: "mailto:dayoung@example.com",
+      icon: "☕",
+      isActive: true,
+      clicks: 89,
+    },
+  ]);
+
+  const [newTitle, setNewTitle] = useState("");
+  const [newUrl, setNewUrl] = useState("");
+
+  const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText("dayoung@example.com");
-      setCopiedEmail(true);
-      setTimeout(() => setCopiedEmail(false), 2000);
+      await navigator.clipboard.writeText("https://mylink.io/@dayoung_dev");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback
+      // fallback
     }
   };
 
-  const filters = ["ALL STACKS", "FRONTEND", "SYSTEM", "DEV TOOLS"];
+  const handleAddLink = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTitle.trim() || !newUrl.trim()) return;
+    setLinks([
+      ...links,
+      {
+        id: Date.now().toString(),
+        title: newTitle,
+        url: newUrl,
+        icon: "🔗",
+        isActive: true,
+        clicks: 0,
+      },
+    ]);
+    setNewTitle("");
+    setNewUrl("");
+  };
 
-  const products = [
-    {
-      id: "prod-1",
-      name: "React 19 & Next.js 16",
-      category: "Full-Stack Web Architecture",
-      badge: "JUST IN",
-      price: "100% PRODUCTION READY",
-      sale: false,
-      swatches: ["#111111", "#f5f5f5", "#007d48"],
-      tag: "FRONTEND",
-      desc: "Zero-latency server components, streaming rendering, and robust state management for athlete-grade web experiences.",
-    },
-    {
-      id: "prod-2",
-      name: "TypeScript (Strict Mode)",
-      category: "Static Type Engine",
-      badge: "ESSENTIAL",
-      price: "ZERO DEFECT DESIGN",
-      sale: false,
-      swatches: ["#1151ff", "#111111"],
-      tag: "SYSTEM",
-      desc: "Bulletproof compile-time safety and self-documenting code contracts that scale seamlessly under heavy workloads.",
-    },
-    {
-      id: "prod-3",
-      name: "Tailwind CSS Design System",
-      category: "Fluid Responsive Styling",
-      badge: "FEATURED",
-      price: "FREE FOR MEMBERS",
-      sale: true,
-      origPrice: "COMPLEX CSS",
-      swatches: ["#0a7281", "#111111", "#f5f5f5"],
-      tag: "FRONTEND",
-      desc: "Pure utility-first layout precision. Zero decorative fluff, mathematical 8px alignment, and micro-interaction polish.",
-    },
-    {
-      id: "prod-4",
-      name: "Python & Git Workflow",
-      category: "Automation & Version Control",
-      badge: "CORE GEAR",
-      price: "CONTINUOUS DELIVERY",
-      sale: false,
-      swatches: ["#111111", "#cacacb"],
-      tag: "DEV TOOLS",
-      desc: "Algorithmic thinking, clean commit history, and rapid automation scripting built to conquer complex problems.",
-    },
-  ];
+  const handleDeleteLink = (id: string) => {
+    setLinks(links.filter((l) => l.id !== id));
+  };
 
-  const filteredProducts =
-    activeFilter === "ALL STACKS"
-      ? products
-      : products.filter((p) => p.tag === activeFilter);
+  const handleToggleLink = (id: string) => {
+    setLinks(
+      links.map((l) => (l.id === id ? { ...l, isActive: !l.isActive } : l))
+    );
+  };
 
   return (
-    <div className="min-h-screen bg-white text-[#111111] font-sans antialiased selection:bg-[#111111] selection:text-white">
-      
-      {/* 1. Nike Utility Top Bar (Height ~36px, bg #f5f5f5) */}
-      <div className="w-full bg-[#f5f5f5] text-[#111111] text-[12px] font-medium h-9 px-4 sm:px-12 flex items-center justify-between border-b border-[#e5e5e5]">
-        <div className="flex items-center gap-4 text-[#707072]">
-          <span className="font-semibold text-[#111111]">DAYOUNG LEE</span>
-          <span className="hidden sm:inline">·</span>
-          <span className="hidden sm:inline">HANYANG UNIVERSITY</span>
-          <span className="hidden sm:inline">·</span>
-          <span className="hidden sm:inline">SEOUL, KR</span>
-        </div>
-        <div className="flex items-center gap-4 font-medium text-[12px]">
-          <a
-            href="https://github.com/0000bandi"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#707072] transition-colors"
-          >
-            GitHub
-          </a>
-          <span>·</span>
-          <a
-            href="https://velog.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#707072] transition-colors"
-          >
-            Blog
-          </a>
-          <span>·</span>
-          <button
-            onClick={handleCopyEmail}
-            className="hover:text-[#707072] transition-colors cursor-pointer"
-          >
-            {copiedEmail ? "Copied" : "Contact"}
-          </button>
-        </div>
-      </div>
-
-      {/* 2. Nike Primary Nav (56-64px, White canvas, zero radius) */}
-      <header className="sticky top-0 z-40 bg-white border-b border-[#e5e5e5]">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-12 h-16 flex items-center justify-between">
-          
-          {/* Logo / Nike Swoosh */}
-          <div className="flex items-center gap-3">
-            <NikeSwoosh className="w-14 sm:w-16 h-7 text-[#111111]" />
-            <span className="text-xs font-bold tracking-widest uppercase text-[#707072] hidden md:inline">
-              ENGINEER EDITION
-            </span>
-          </div>
-
-          {/* Centered Primary Nav Links */}
-          <nav className="hidden md:flex items-center gap-8 font-medium text-[16px] text-[#111111]">
-            <a href="#hero" className="hover:text-[#707072] transition-colors">
-              New & Featured
-            </a>
-            <a href="#stacks" className="hover:text-[#707072] transition-colors border-b-2 border-[#111111] pb-0.5">
-              Tech Stack
-            </a>
-            <a href="#editorial" className="hover:text-[#707072] transition-colors">
-              Projects
-            </a>
-            <a href="#member" className="hover:text-[#707072] transition-colors">
-              Membership
-            </a>
-          </nav>
-
-          {/* Right Action Cluster */}
-          <div className="flex items-center gap-3">
-            {/* Search Pill */}
-            <div className="hidden sm:flex items-center bg-[#f5f5f5] rounded-full px-4 py-2 h-10 w-44 lg:w-56 text-[#707072] text-[14px]">
-              <Search className="w-4 h-4 mr-2 text-[#111111]" />
-              <span className="truncate">Search skills</span>
-            </div>
-
-            {/* Circular Heart Button */}
-            <button
-              onClick={handleLike}
-              aria-label="Favorite"
-              className="w-10 h-10 rounded-full bg-[#f5f5f5] hover:bg-[#e5e5e5] flex items-center justify-center text-[#111111] transition-all active:scale-95 cursor-pointer relative"
-            >
-              <Heart
-                className={`w-4 h-4 ${
-                  liked ? "fill-[#d30005] text-[#d30005]" : "text-[#111111]"
-                }`}
-              />
-              {liked && (
-                <span className="absolute -top-1 -right-1 bg-[#111111] text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full">
-                  1
-                </span>
-              )}
-            </button>
-
-            {/* GitHub Primary Pill Button */}
-            <a
-              href="https://github.com/0000bandi"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#111111] hover:bg-[#333333] text-white text-[14px] font-medium px-5 py-2.5 rounded-full transition-all active:scale-95 flex items-center gap-1.5"
-            >
-              <GithubIcon className="w-4 h-4 text-white" />
-              <span className="hidden xs:inline">GitHub</span>
-            </a>
-          </div>
-
-        </div>
-      </header>
-
-      {/* 3. Sub-Nav Strip (PLP Style Hairline) */}
-      <div className="border-b border-[#e5e5e5] bg-white">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-12 py-3 flex items-center justify-between text-[14px] text-[#707072]">
-          <div className="flex items-center gap-2">
-            <span>Engineering</span>
-            <span>/</span>
-            <span>Hanyang Univ</span>
-            <span>/</span>
-            <span className="text-[#111111] font-medium">Dayoung Lee</span>
-          </div>
-          <div className="flex items-center gap-4 text-[#111111] font-medium text-[14px]">
-            <span className="hidden sm:inline text-[#707072]">
-              {products.length} Stacks Available
-            </span>
-            <button
-              onClick={handleCopyEmail}
-              className="flex items-center gap-1 hover:text-[#707072] cursor-pointer"
-            >
-              {copiedEmail ? (
-                <>
-                  <Check className="w-4 h-4 text-[#007d48]" />
-                  <span className="text-[#007d48]">Copied Email</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-4 h-4" />
-                  <span>Copy Email</span>
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* 4. Editorial Campaign Hero: Towering Futura Display Lockup burned into imagery */}
-      <section id="hero" className="max-w-[1440px] mx-auto px-4 sm:px-12 pt-8 pb-12">
-        <div className="relative w-full bg-[#111111] text-white overflow-hidden rounded-none min-h-[460px] sm:min-h-[560px] lg:min-h-[640px] flex flex-col justify-end p-6 sm:p-12 lg:p-16">
-          
-          {/* Background Stage: High-contrast athletic coder perspective */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-zinc-950/80 to-zinc-900 pointer-events-none" />
-          
-          {/* Geometric Accent Line */}
-          <div className="absolute top-8 left-8 sm:left-12 text-xs font-mono font-bold tracking-widest text-[#707072] uppercase">
-            DAYOUNG LEE // SS26 ARCHIVE
-          </div>
-
-          <div className="relative z-10 max-w-4xl space-y-4 sm:space-y-6">
+    <div className={isDark ? "dark" : ""}>
+      <main className="min-h-screen bg-background text-foreground transition-colors duration-300 antialiased font-sans">
+        
+        {/* Top Header Bar */}
+        <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md px-4 sm:px-8 py-3">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
             
-            <p className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-[#9e9ea0]">
-              JUNIOR SOFTWARE ENGINEER · WEB & FRONTEND
-            </p>
-
-            {/* Towering 96px Futura Display Campaign Lockup */}
-            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.88] text-white">
-              BUILT TO
-              <br />
-              CREATE.
-            </h1>
-
-            <p className="text-base sm:text-xl text-[#cacacb] max-w-xl font-normal leading-relaxed pt-2">
-              타협 없는 기준과 수학적 정밀함으로,
-              <br />
-              아이디어를 실제로 동작하는 코드로 전환합니다.
-            </p>
-
-            {/* Action Pill Pair */}
-            <div className="flex flex-wrap items-center gap-3 pt-4">
-              <a
-                href="#stacks"
-                className="bg-white hover:bg-[#f5f5f5] text-[#111111] text-[16px] font-medium px-8 py-3.5 rounded-full transition-all active:scale-95"
-              >
-                Explore Skills
-              </a>
-
-              <a
-                href="https://github.com/0000bandi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-transparent hover:bg-white/10 text-white border border-white text-[16px] font-medium px-8 py-3.5 rounded-full transition-all active:scale-95"
-              >
-                GitHub Profile
-              </a>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* 5. Filter Strip (Nike Filter Chips) */}
-      <section className="max-w-[1440px] mx-auto px-4 sm:px-12 py-4">
-        <div className="flex items-center justify-between pb-4 border-b border-[#e5e5e5]">
-          <h2 className="text-xl sm:text-2xl font-medium tracking-tight uppercase text-[#111111]">
-            Featured Technologies ({filteredProducts.length})
-          </h2>
-          
-          {/* Filter Chips */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-            {filters.map((filter) => {
-              const isActive = activeFilter === filter;
-              return (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`text-[14px] font-medium px-4 py-2 rounded-full border transition-all cursor-pointer whitespace-nowrap active:scale-95 ${
-                    isActive
-                      ? "bg-[#111111] text-white border-[#111111]"
-                      : "bg-white text-[#111111] border-[#cacacb] hover:border-[#111111]"
-                  }`}
-                >
-                  {filter}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Product Card Grid: 1:1 on #f5f5f5, zero radius, zero shadow */}
-      <section id="stacks" className="max-w-[1440px] mx-auto px-4 sm:px-12 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-12">
-          {filteredProducts.map((product) => (
-            <div key={product.id} className="group flex flex-col rounded-none bg-white">
-              
-              {/* Product Image Area on Soft Cloud #f5f5f5 (1:1 Ratio) */}
-              <div className="relative w-full aspect-square bg-[#f5f5f5] flex flex-col items-center justify-center p-8 overflow-hidden rounded-none">
-                
-                {/* Promo Badge Top-Left */}
-                <div className="absolute top-4 left-4 bg-white border border-[#cacacb] text-[#111111] text-[12px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
-                  {product.badge}
-                </div>
-
-                {/* Minimalist Graphic Representation */}
-                <div className="w-full text-center space-y-2 group-hover:scale-105 transition-transform duration-300">
-                  <div className="text-5xl sm:text-6xl font-black text-[#111111] tracking-tighter">
-                    {product.name.split(" ")[0]}
-                  </div>
-                  <div className="text-xs font-mono font-bold tracking-widest text-[#707072] uppercase">
-                    MODULAR STACK
-                  </div>
-                </div>
-
-                {/* Bottom-right Quick Action */}
-                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="w-10 h-10 rounded-full bg-white text-[#111111] flex items-center justify-center shadow-sm">
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </div>
-
+            {/* Logo & Preset Info */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center size-9 rounded-2xl bg-primary text-primary-foreground font-black text-sm shadow-xs">
+                ML
               </div>
-
-              {/* Product Metadata directly below (No internal card padding, 8px gaps) */}
-              <div className="pt-3 space-y-1.5">
-                
-                {/* Swatch Dots */}
-                <div className="flex items-center gap-1.5 py-1">
-                  {product.swatches.map((color, idx) => (
-                    <span
-                      key={idx}
-                      className="w-3 h-3 rounded-full border border-[#cacacb] inline-block"
-                      style={{ backgroundColor: color }}
-                    />
-                  ))}
-                  <span className="text-[12px] text-[#707072] ml-1 font-medium">
-                    {product.swatches.length} Colors
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-heading font-bold text-base tracking-tight">
+                    마이링크 (MyLink)
                   </span>
+                  <Badge variant="default" className="text-[10px] h-4">
+                    Preset: b6u0Tmjb6
+                  </Badge>
                 </div>
-
-                {/* Product Name */}
-                <h3 className="text-[16px] font-medium text-[#111111] tracking-tight">
-                  {product.name}
-                </h3>
-
-                {/* Category Subtitle */}
-                <p className="text-[14px] text-[#707072] font-medium">
-                  {product.category}
-                </p>
-
-                {/* Description */}
-                <p className="text-[13px] text-[#707072] line-clamp-2 leading-relaxed pt-0.5">
-                  {product.desc}
-                </p>
-
-                {/* Status / Price Row */}
-                <div className="pt-1 text-[16px] font-medium">
-                  {product.sale ? (
-                    <div className="flex items-center gap-2">
-                      <span className="text-[#d30005] font-semibold">{product.price}</span>
-                      <span className="text-[#707072] line-through text-[14px]">
-                        {product.origPrice}
-                      </span>
-                      <span className="text-[#d30005] text-[12px] font-bold">100% OFF</span>
-                    </div>
-                  ) : (
-                    <span className="text-[#111111]">{product.price}</span>
-                  )}
-                </div>
-
-              </div>
-
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 7. Full-Bleed Editorial Campaign Tile: "Never Settle" */}
-      <section id="editorial" className="max-w-[1440px] mx-auto px-4 sm:px-12 py-12">
-        <div className="relative w-full bg-[#111111] text-white p-8 sm:p-16 lg:p-20 overflow-hidden flex flex-col justify-end min-h-[380px] sm:min-h-[480px]">
-          
-          <div className="max-w-2xl space-y-4 relative z-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#9e9ea0]">
-              ENGINEERING PHILOSOPHY
-            </span>
-
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none">
-              SPEED. PRECISION.
-              <br />
-              CLEAN EXECUTION.
-            </h2>
-
-            <p className="text-sm sm:text-base text-[#cacacb] leading-relaxed max-w-lg">
-              더 적은 코드로 더 많은 가치를 만듭니다. 복잡한 문제를 명확한 구조로 분해하고,
-              사용자에게 가장 빠르고 매끄러운 경험을 전달합니다.
-            </p>
-
-            {/* Bottom-left White Pill on Image */}
-            <div className="pt-4">
-              <a
-                href="https://github.com/0000bandi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center bg-white hover:bg-[#f5f5f5] text-[#111111] text-[14px] font-medium px-7 py-3 rounded-full transition-all active:scale-95"
-              >
-                <span>View Full Source Code</span>
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </a>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 8. Nike Membership Section: Member Benefits Grid */}
-      <section id="member" className="max-w-[1440px] mx-auto px-4 sm:px-12 py-12 border-t border-[#e5e5e5]">
-        <div className="space-y-6">
-          
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl sm:text-3xl font-medium tracking-tight uppercase text-[#111111]">
-              Developer Membership
-            </h2>
-            <div className="text-xs font-mono font-bold text-[#707072]">
-              ID: DAYOUNG-2026-DEV
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            {/* Benefit Card 1 */}
-            <div className="bg-[#f5f5f5] p-8 flex flex-col justify-between min-h-[260px]">
-              <div className="space-y-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#707072]">
-                  COMMUNICATION
-                </span>
-                <h3 className="text-xl font-bold text-[#111111] tracking-tight">
-                  Direct Line & Email
-                </h3>
-                <p className="text-sm text-[#707072] leading-relaxed">
-                  프로젝트 제안, 협업 문의, 커피챗 등 언제든 환영합니다.
+                <p className="text-xs text-muted-foreground hidden sm:block">
+                  shadcn/ui Design System · Base-Rhea (Olive Palette)
                 </p>
               </div>
-
-              <button
-                onClick={handleCopyEmail}
-                className="mt-6 self-start bg-[#111111] hover:bg-[#333333] text-white text-xs font-medium px-5 py-2.5 rounded-full transition-all active:scale-95 cursor-pointer"
-              >
-                {copiedEmail ? "Email Copied!" : "Copy Contact"}
-              </button>
             </div>
 
-            {/* Benefit Card 2 */}
-            <div className="bg-[#f5f5f5] p-8 flex flex-col justify-between min-h-[260px]">
-              <div className="space-y-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#707072]">
-                  CODE VAULT
-                </span>
-                <h3 className="text-xl font-bold text-[#111111] tracking-tight">
-                  Public Repositories
-                </h3>
-                <p className="text-sm text-[#707072] leading-relaxed">
-                  깃허브에서 모든 오픈소스 프로젝트와 실험적 코드를 둘러보세요.
-                </p>
-              </div>
-
-              <a
-                href="https://github.com/0000bandi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 self-start bg-[#111111] hover:bg-[#333333] text-white text-xs font-medium px-5 py-2.5 rounded-full transition-all active:scale-95"
-              >
-                Visit GitHub
-              </a>
-            </div>
-
-            {/* Benefit Card 3 */}
-            <div className="bg-[#f5f5f5] p-8 flex flex-col justify-between min-h-[260px]">
-              <div className="space-y-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#707072]">
-                  COMMUNITY CHEER
-                </span>
-                <h3 className="text-xl font-bold text-[#111111] tracking-tight">
-                  Support the Builder
-                </h3>
-                <p className="text-sm text-[#707072] leading-relaxed">
-                  현재 {likes}명의 개발자와 동료들이 응원을 보냈습니다.
-                </p>
-              </div>
-
-              <button
-                onClick={handleLike}
-                className={`mt-6 self-start text-xs font-medium px-5 py-2.5 rounded-full transition-all active:scale-95 cursor-pointer flex items-center gap-1.5 ${
-                  liked
-                    ? "bg-[#d30005] text-white"
-                    : "bg-[#111111] text-white hover:bg-[#333333]"
-                }`}
-              >
-                <Heart className={`w-3.5 h-3.5 ${liked ? "fill-white" : ""}`} />
-                <span>{liked ? "Cheered! ❤️" : "Send Cheer"}</span>
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* 9. Nike 4-Column Footer with 1px Hairline */}
-      <footer className="border-t border-[#cacacb] bg-white pt-14 pb-16">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-12 space-y-12">
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-[14px]">
-            
-            <div className="space-y-3">
-              <h4 className="font-bold text-[#111111] uppercase tracking-wide">
-                Resources
-              </h4>
-              <ul className="space-y-2 text-[#707072] font-medium">
-                <li><a href="https://github.com/0000bandi" target="_blank" rel="noopener noreferrer" className="hover:text-[#111111]">GitHub Profile</a></li>
-                <li><a href="https://velog.io" target="_blank" rel="noopener noreferrer" className="hover:text-[#111111]">Engineering Blog</a></li>
-                <li><a href="#" className="hover:text-[#111111]">Notion Resume</a></li>
-                <li><a href="#" className="hover:text-[#111111]">Project Demos</a></li>
-              </ul>
-            </div>
-
-            <div className="space-y-3">
-              <h4 className="font-bold text-[#111111] uppercase tracking-wide">
-                Tech Stack
-              </h4>
-              <ul className="space-y-2 text-[#707072] font-medium">
-                <li><span>Next.js 16 (App Router)</span></li>
-                <li><span>React 19 & TypeScript</span></li>
-                <li><span>Tailwind CSS v4</span></li>
-                <li><span>Git & GitHub Actions</span></li>
-              </ul>
-            </div>
-
-            <div className="space-y-3">
-              <h4 className="font-bold text-[#111111] uppercase tracking-wide">
-                University
-              </h4>
-              <ul className="space-y-2 text-[#707072] font-medium">
-                <li><span>Hanyang University</span></li>
-                <li><span>Freshman Year</span></li>
-                <li><span>Seoul, Republic of Korea</span></li>
-                <li><span>Vibe Coding Course</span></li>
-              </ul>
-            </div>
-
-            <div className="space-y-3">
-              <h4 className="font-bold text-[#111111] uppercase tracking-wide">
-                Connect
-              </h4>
-              <ul className="space-y-2 text-[#707072] font-medium">
-                <li><button onClick={handleCopyEmail} className="hover:text-[#111111] text-left">dayoung@example.com</button></li>
-                <li><a href="https://github.com/0000bandi" target="_blank" rel="noopener noreferrer" className="hover:text-[#111111]">@0000bandi</a></li>
-                <li><span>Open to Collaboration</span></li>
-              </ul>
-            </div>
-
-          </div>
-
-          {/* Legal / Copyright Bottom Row */}
-          <div className="pt-8 border-t border-[#e5e5e5] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-[11px] text-[#707072] font-medium">
+            {/* Quick Actions (Dark Mode, Share, GitHub) */}
             <div className="flex items-center gap-2">
-              <span className="font-bold text-[#111111]">© 2026 Dayoung Lee.</span>
-              <span>All Rights Reserved. Inspired by Nike Commerce Design System.</span>
-            </div>
-            <div className="flex flex-wrap items-center gap-4 text-[#707072]">
-              <span className="hover:text-[#111111] cursor-pointer">Terms of Code</span>
-              <span>·</span>
-              <span className="hover:text-[#111111] cursor-pointer">Privacy Policy</span>
-              <span>·</span>
-              <span className="hover:text-[#111111] cursor-pointer">Nike Design System Spec</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleCopy}
+                className="gap-1.5"
+              >
+                {copied ? (
+                  <>
+                    <Check className="size-3.5 text-primary" />
+                    <span>복사됨!</span>
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="size-3.5" />
+                    <span className="hidden xs:inline">공유하기</span>
+                  </>
+                )}
+              </Button>
+
+              <Button
+                variant="outline"
+                size="icon-sm"
+                onClick={() => setIsDark(!isDark)}
+                title="다크 모드 토글"
+              >
+                {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+              </Button>
             </div>
           </div>
+        </header>
 
-        </div>
-      </footer>
+        {/* Hero Banner Area */}
+        <section className="border-b border-border bg-muted/30 py-6 px-4 sm:px-8">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-foreground bg-primary/20 px-2.5 py-0.5 rounded-full mb-2">
+                <Sparkles className="size-3 text-primary-foreground" />
+                <span>New Design System Applied</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-heading font-bold tracking-tight">
+                shadcn/ui b6u0Tmjb6 프리셋 기반 마이링크 디자인 시스템
+              </h1>
+              <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
+                올리브(Olive) 베이스 컬러와 곡선형 24px 지오메트리, 부드러운 섀도우 링이 조화된 모던 링크트리 클론 플랫폼입니다.
+              </p>
+            </div>
 
+            <div className="flex items-center gap-2 shrink-0">
+              <Badge variant="outline" className="py-1 px-3 text-xs">
+                Next.js 16 (Turbopack)
+              </Badge>
+              <Badge variant="secondary" className="py-1 px-3 text-xs">
+                Tailwind CSS v4
+              </Badge>
+            </div>
+          </div>
+        </section>
+
+        {/* Main Content Tabs */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-8 py-8">
+          <Tabs defaultValue="public-view" className="w-full">
+            
+            <div className="flex items-center justify-between pb-6">
+              <TabsList className="bg-muted p-1 rounded-2xl">
+                <TabsTrigger value="public-view" className="gap-2 px-4">
+                  <Smartphone className="size-4" />
+                  <span>모바일 프로필 뷰</span>
+                </TabsTrigger>
+                <TabsTrigger value="dashboard-view" className="gap-2 px-4">
+                  <LayoutDashboard className="size-4" />
+                  <span>관리자 대시보드 뷰</span>
+                </TabsTrigger>
+                <TabsTrigger value="tokens-view" className="gap-2 px-4">
+                  <Palette className="size-4" />
+                  <span>디자인 시스템 토큰</span>
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+            {/* TAB 1: PUBLIC PROFILE VIEW (The mobile view seen by visitors) */}
+            <TabsContent value="public-view" className="mt-0">
+              <div className="flex flex-col items-center justify-center py-4">
+                
+                {/* Mobile Mockup Device Frame */}
+                <div className="w-full max-w-md rounded-[38px] border-4 border-foreground/10 bg-card p-6 sm:p-8 shadow-2xl ring-1 ring-border relative overflow-hidden transition-all">
+                  
+                  {/* Top Action */}
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="text-[11px] font-mono font-semibold text-muted-foreground">
+                      mylink.io/@dayoung_dev
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      onClick={handleCopy}
+                      className="rounded-full"
+                    >
+                      {copied ? <Check className="size-3.5 text-primary" /> : <Copy className="size-3.5" />}
+                    </Button>
+                  </div>
+
+                  {/* Profile Section */}
+                  <div className="flex flex-col items-center text-center space-y-3 mb-6">
+                    <div className="relative">
+                      <Avatar size="lg" className="size-24 border-2 border-border shadow-md">
+                        <AvatarImage src="" alt="이다영" />
+                        <AvatarFallback className="bg-primary/20 text-primary-foreground font-heading font-bold text-2xl">
+                          다영
+                        </AvatarFallback>
+                        <AvatarBadge className="bg-primary size-4" />
+                      </Avatar>
+                    </div>
+
+                    <div className="space-y-1">
+                      <h2 className="text-xl font-heading font-bold tracking-tight">
+                        이다영
+                      </h2>
+                      <p className="text-xs font-medium text-muted-foreground">
+                        @dayoung_dev
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1">
+                      <Badge variant="secondary" className="gap-1 text-[11px]">
+                        <GraduationCap className="size-3" />
+                        <span>한양대학교</span>
+                      </Badge>
+                      <Badge variant="outline" className="gap-1 text-[11px]">
+                        <Laptop className="size-3" />
+                        <span>주니어 프론트엔드</span>
+                      </Badge>
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed max-w-xs break-keep pt-1">
+                      새로운 기술을 탐구하고 아이디어를 코드로 구현하는 개발자입니다. 사용자 중심의 깔끔한 경험을 고민합니다. ✨
+                    </p>
+
+                    {/* Social Icon Bar */}
+                    <div className="flex items-center justify-center gap-2 pt-2">
+                      <a
+                        href="https://github.com/0000bandi"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="size-8 rounded-full bg-muted flex items-center justify-center text-foreground hover:bg-primary/20 hover:text-primary-foreground transition-colors"
+                      >
+                        <GithubIcon className="size-4" />
+                      </a>
+                      <a
+                        href="https://velog.io"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="size-8 rounded-full bg-muted flex items-center justify-center text-foreground hover:bg-primary/20 hover:text-primary-foreground transition-colors"
+                      >
+                        <Globe className="size-4" />
+                      </a>
+                      <a
+                        href="mailto:dayoung@example.com"
+                        className="size-8 rounded-full bg-muted flex items-center justify-center text-foreground hover:bg-primary/20 hover:text-primary-foreground transition-colors"
+                      >
+                        <Mail className="size-4" />
+                      </a>
+                    </div>
+                  </div>
+
+                  <Separator className="my-6" />
+
+                  {/* Links List */}
+                  <div className="space-y-3">
+                    {links
+                      .filter((l) => l.isActive)
+                      .map((link) => (
+                        <a
+                          key={link.id}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group block p-3.5 rounded-2xl bg-card border border-border shadow-xs hover:border-primary/50 hover:bg-accent/40 active:scale-[0.98] transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-3 truncate">
+                              <span className="text-lg shrink-0">{link.icon}</span>
+                              <span className="text-sm font-medium tracking-tight truncate group-hover:text-primary-foreground">
+                                {link.title}
+                              </span>
+                            </div>
+                            <ExternalLink className="size-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+                          </div>
+                        </a>
+                      ))}
+
+                    {/* YouTube Media Embed Card */}
+                    <Card size="sm" className="bg-card/50 border-border overflow-hidden">
+                      <CardHeader className="pb-2">
+                        <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
+                          <YoutubeIcon className="size-4 text-red-500" />
+                          <span>최신 영상 // 10분 만에 웹사이트 만들기</span>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="relative aspect-video w-full rounded-xl bg-muted/60 flex items-center justify-center border border-border overflow-hidden group cursor-pointer">
+                          <div className="size-12 rounded-full bg-primary/90 text-primary-foreground flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            ▶
+                          </div>
+                          <span className="absolute bottom-2 right-2 bg-black/75 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">
+                            12:45
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Cheer Button */}
+                  <div className="pt-6">
+                    <Button
+                      variant={hasLiked ? "default" : "secondary"}
+                      className="w-full gap-2 rounded-2xl"
+                      onClick={() => {
+                        setLikes((prev) => prev + (hasLiked ? -1 : 1));
+                        setHasLiked(!hasLiked);
+                      }}
+                    >
+                      <Heart className={`size-4 ${hasLiked ? "fill-current" : ""}`} />
+                      <span>프로필 응원하기 ({likes})</span>
+                    </Button>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="text-center pt-8 pb-2 space-y-1">
+                    <div className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted-foreground">
+                      <Sparkles className="size-3 text-primary" />
+                      <span>Powered by 마이링크</span>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </TabsContent>
+
+            {/* TAB 2: ADMIN DASHBOARD VIEW (Split screen editing panel) */}
+            <TabsContent value="dashboard-view" className="mt-0">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                {/* Left Editing Panel */}
+                <div className="lg:col-span-7 space-y-6">
+                  
+                  {/* Link Creator Card */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <Plus className="size-4 text-primary" />
+                        <span>새 링크 추가</span>
+                      </CardTitle>
+                      <CardDescription>
+                        방문자에게 보여줄 새로운 링크의 제목과 목적지 URL을 입력하세요.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <form onSubmit={handleAddLink} className="space-y-3">
+                        <div>
+                          <Input
+                            placeholder="링크 제목 (예: 새 프로젝트 구경하기)"
+                            value={newTitle}
+                            onChange={(e) => setNewTitle(e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <Input
+                            placeholder="URL (https://...)"
+                            value={newUrl}
+                            onChange={(e) => setNewUrl(e.target.value)}
+                          />
+                        </div>
+                        <Button type="submit" className="w-full sm:w-auto">
+                          링크 등록하기
+                        </Button>
+                      </form>
+                    </CardContent>
+                  </Card>
+
+                  {/* Managed Links List */}
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <CardTitle className="text-lg">등록된 링크 관리</CardTitle>
+                          <CardDescription>
+                            스위치로 노출 여부를 조절하거나 순서를 관리합니다.
+                          </CardDescription>
+                        </div>
+                        <Badge variant="secondary">총 {links.length}개</Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {links.map((link) => (
+                        <div
+                          key={link.id}
+                          className="flex items-center justify-between p-3.5 rounded-2xl bg-muted/40 border border-border gap-3"
+                        >
+                          <div className="flex items-center gap-3 truncate">
+                            <GripVertical className="size-4 text-muted-foreground shrink-0 cursor-grab" />
+                            <div className="truncate">
+                              <p className="text-sm font-medium tracking-tight truncate">
+                                {link.title}
+                              </p>
+                              <p className="text-xs text-muted-foreground truncate font-mono">
+                                {link.url}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-3 shrink-0">
+                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-mono">
+                              <TrendingUp className="size-3.5 text-primary" />
+                              <span>{link.clicks}회</span>
+                            </div>
+                            <Switch
+                              checked={link.isActive}
+                              onCheckedChange={() => handleToggleLink(link.id)}
+                            />
+                            <Button
+                              variant="ghost"
+                              size="icon-xs"
+                              className="text-destructive hover:bg-destructive/10"
+                              onClick={() => handleDeleteLink(link.id)}
+                            >
+                              <Trash2 className="size-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+
+                </div>
+
+                {/* Right Sticky Preview Summary */}
+                <div className="lg:col-span-5 sticky top-20 space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base flex items-center justify-between">
+                        <span>실시간 연동 현황</span>
+                        <Badge variant="default">LIVE SYNCHRONIZED</Badge>
+                      </CardTitle>
+                      <CardDescription>
+                        좌측에서 수정한 내용이 공개 프로필 뷰에 즉시 반영됩니다.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3 text-sm">
+                      <div className="flex justify-between py-1.5 border-b border-border">
+                        <span className="text-muted-foreground">내 마이링크 주소</span>
+                        <span className="font-mono font-semibold">mylink.io/@dayoung_dev</span>
+                      </div>
+                      <div className="flex justify-between py-1.5 border-b border-border">
+                        <span className="text-muted-foreground">활성화된 링크 수</span>
+                        <span className="font-semibold">{links.filter((l) => l.isActive).length}개</span>
+                      </div>
+                      <div className="flex justify-between py-1.5 border-b border-border">
+                        <span className="text-muted-foreground">적용된 디자인 프리셋</span>
+                        <span className="font-mono font-semibold">b6u0Tmjb6 (Olive)</span>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button variant="outline" className="w-full gap-2" onClick={handleCopy}>
+                        <Link2 className="size-4" />
+                        <span>공개 프로필 URL 복사</span>
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </div>
+
+              </div>
+            </TabsContent>
+
+            {/* TAB 3: DESIGN SYSTEM TOKENS (Color palette, button variants, etc.) */}
+            <TabsContent value="tokens-view" className="mt-0 space-y-8">
+              
+              {/* Color Ramp Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>🎨 프리셋 b6u0Tmjb6 테마 컬러 토큰</CardTitle>
+                  <CardDescription>
+                    OKLCH 기반 올리브(Olive) 팔레트의 시맨틱 토큰 매핑 현황입니다.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                    <div className="p-4 rounded-2xl bg-primary text-primary-foreground flex flex-col justify-between h-28 shadow-sm">
+                      <span className="text-xs font-mono font-bold">Primary</span>
+                      <span className="text-[11px] font-mono opacity-80">--primary (Olive)</span>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-secondary text-secondary-foreground border border-border flex flex-col justify-between h-28 shadow-sm">
+                      <span className="text-xs font-mono font-bold">Secondary</span>
+                      <span className="text-[11px] font-mono opacity-80">--secondary</span>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-accent text-accent-foreground border border-border flex flex-col justify-between h-28 shadow-sm">
+                      <span className="text-xs font-mono font-bold">Accent</span>
+                      <span className="text-[11px] font-mono opacity-80">--accent</span>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-muted text-muted-foreground flex flex-col justify-between h-28 shadow-sm">
+                      <span className="text-xs font-mono font-bold">Muted</span>
+                      <span className="text-[11px] font-mono opacity-80">--muted</span>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-card text-card-foreground border border-border flex flex-col justify-between h-28 shadow-sm">
+                      <span className="text-xs font-mono font-bold">Card</span>
+                      <span className="text-[11px] font-mono opacity-80">--card</span>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-destructive/10 text-destructive border border-destructive/20 flex flex-col justify-between h-28 shadow-sm">
+                      <span className="text-xs font-mono font-bold">Destructive</span>
+                      <span className="text-[11px] font-mono opacity-80">--destructive</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Component Variants Showcase */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {/* Button Showcase */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">Button Variants (버튼 변형)</CardTitle>
+                    <CardDescription>rounded-2xl 곡률 및 시맨틱 변형</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-wrap items-center gap-2.5">
+                    <Button variant="default">Default Button</Button>
+                    <Button variant="secondary">Secondary</Button>
+                    <Button variant="outline">Outline</Button>
+                    <Button variant="ghost">Ghost</Button>
+                    <Button variant="destructive">Destructive</Button>
+                  </CardContent>
+                </Card>
+
+                {/* Badge Showcase */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-base">Badge Variants (배지 변형)</CardTitle>
+                    <CardDescription>상태 표시 및 카테고리 태그</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-wrap items-center gap-2.5">
+                    <Badge variant="default">Primary Badge</Badge>
+                    <Badge variant="secondary">Secondary</Badge>
+                    <Badge variant="outline">Outline</Badge>
+                    <Badge variant="destructive">Destructive</Badge>
+                  </CardContent>
+                </Card>
+
+              </div>
+
+            </TabsContent>
+
+          </Tabs>
+        </section>
+
+      </main>
     </div>
   );
 }

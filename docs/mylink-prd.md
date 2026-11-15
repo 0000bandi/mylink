@@ -1,6 +1,6 @@
 # 📄 마이링크 (MyLink) 제품 요구사항 정의서 (PRD)
 **링크트리(Linktree) 클론 멀티유저 SaaS 플랫폼**
-*Version: 1.3 (Updated: 2026-11-15)*
+*Version: 1.4 (Updated: 2026-11-15 - shadcn/ui 디자인 시스템 표준 확정)*
 
 ---
 
@@ -10,12 +10,14 @@
 - **서비스명**: 마이링크 (MyLink)
 - **슬로건**: "하나의 링크로 나를 표현하는 가장 쉬운 방법"
 - **서비스 형태**: 다중 사용자(Multi-Tenant SaaS) 기반 웹 애플리케이션
+- **디자인 시스템 표준**: **shadcn/ui** (Preset: `b6u0Tmjb6`, Style: `base-rhea`, Base Color: `olive`)
 
 ### 1.2 개발 배경 및 목표
 - 인스타그램, 틱톡, 유튜브 등 소셜 플랫폼의 프로필 단일 링크 제한을 해결.
 - 개발자, 크리에이터, 대학생 등 누구나 1분 만에 자신만의 감각적인 멀티 링크 페이지(`/@사용자명` 또는 `/[username]`)를 생성하고 관리할 수 있도록 지원.
 - 단순 링크 연결을 넘어 **유튜브/음악 등 풍부한 미디어 임베드**와 **실시간 유입/클릭 분석 대시보드**를 기본 제공하여 콘텐츠 영향력 극대화.
 - 직관적인 **좌측 편집 패널 + 우측 실시간 모바일 목업 미리보기(Live Preview)** 환경을 제공하여 최상의 관리자 경험 구축.
+- **향후 모든 UI/UX 개발은 shadcn/ui 공식 컴포넌트와 토큰 시스템을 단일 진실 공급원(SSOT)으로 삼아 일관성 있게 구현.**
 
 ---
 
@@ -29,7 +31,7 @@
 
 ---
 
-## 3. 사용자 페르소나 및 시나리오 (User Personas & Scenarios) ✨ 신규
+## 3. 사용자 페르소나 및 시나리오 (User Personas & Scenarios)
 
 ### 3.1 대표 페르소나 정의
 
@@ -58,14 +60,14 @@
    - 이다영은 '마이링크' 랜딩 페이지에서 `[Google로 3초 만에 시작하기]`를 클릭한다.
    - 고유 URL 핸들 입력란에 `dayoung`을 입력하자 실시간으로 `사용 가능한 주소입니다!` 녹색 체크가 뜬다.
 2. **2단 분할 대시보드 진입**:
-   - 가입 완료 즉시 좌측에는 [링크 관리] 편집 패널, 우측에는 스마트폰 목업 화면이 나란히 뜬다.
+   - 가입 완료 즉시 좌측에는 shadcn/ui 기반 [링크 관리] 편집 패널, 우측에는 스마트폰 목업 화면이 나란히 뜬다.
    - `[+ 새 블록 추가]` 버튼을 눌러 'GitHub 저장소', 'Velog 기술 블로그', 'Notion 이력서' 링크 3개를 등록한다.
 3. **드래그 앤 드롭 정렬 & 실시간 피드백**:
    - 이번 주에 완성한 'Notion 이력서'를 가장 돋보이게 하기 위해 링크 왼쪽 핸들(`:::`)을 잡아 상단으로 끌어올린다.
-   - 우측 폰 목업에서 실시간으로 이력서 버튼이 맨 위로 스무스하게 이동하는 것을 확인한다.
+   - 우측 폰 목업에서 실시간으로 이력서 버튼이 맨 위로 부드럽게 이동하는 것을 확인한다.
 4. **테마 선택 및 프로필 단장**:
    - `[프로필 & 테마]` 탭으로 이동하여 아바타 사진을 업로드하고, 바이오에 "코드로 아이디어를 현실로 만드는 주니어 개발자"를 입력한다.
-   - 5개 프리셋 테마 중 트렌디한 **'Neobrutalism'** 테마를 클릭하자 오른쪽 폰 화면이 노란 도트 배경과 볼드한 블랙 카드로 즉시 변신한다.
+   - 테마 프리셋 중 올리브 톤의 모던 미니멀 테마를 클릭하자 오른쪽 폰 화면이 즉시 감각적인 올리브 테마 카드로 변신한다.
 5. **공유 및 배포**:
    - 우측 상단 `[내 링크 복사]` 버튼을 눌러 클립보드에 `mylink.io/dayoung`을 복사한 뒤, 인스타그램 프로필 바이오와 이력서 링크란에 등록한다.
 
@@ -77,7 +79,7 @@
    - `[+ 새 블록 추가]`에서 **[유튜브 임베드]**를 선택하고 유튜브 영상 URL을 붙여넣는다.
    - 우측 폰 목업에서 별도의 팝업 없이 16:9 반응형 유튜브 플레이어가 즉시 생성되어 썸네일과 재생 버튼이 뜨는 것을 확인한다.
 2. **섹션 구분으로 가독성 향상**:
-   - 영상 위에는 `[헤더 블록]`을 추가하여 `🎬 이번 주 신규 영상` 라벨을 달고, 그 아래에는 `🛍️ 영상 속 사용 장비` 링크 그룹을 분리 배치한다.
+   - 영상 위에는 shadcn Badge/Header를 활용한 `[헤더 블록]`을 추가하여 `🎬 이번 주 신규 영상` 라벨을 달고, 그 아래에는 `🛍️ 영상 속 사용 장비` 링크 그룹을 분리 배치한다.
 3. **실시간 트래픽 및 클릭 분석**:
    - 인스타그램 스토리에 마이링크 주소를 공유한 지 하루 뒤, 대시보드의 `[통계 분석 (Analytics)]` 탭을 연다.
    - 상단 KPI 카드에서 **오늘 총 조회수 1,280회**, **총 클릭수 420회 (CTR 32.8%)**를 확인한다.
@@ -91,24 +93,53 @@
    - 인앱 브라우저 환경임에도 1초 미만으로 지연 없이 깔끔하게 모바일 풀스크린 뷰가 열린다.
 2. **콘텐츠 탐색 및 인터랙션**:
    - 상단의 인스타그램, 깃허브 원형 아이콘 바를 훑어본 뒤, 이다영이 작성한 기술 블로그 링크 버튼을 누른다.
-   - 버튼을 누르는 순간 쫀득하게 눌리는 햅틱 애니메이션(`active:scale-[0.98]`)을 느끼며 새 탭에서 블로그 글로 이동한다.
+   - 버튼을 누르는 순간 shadcn 버튼의 쫀득한 햅틱 애니메이션(`active:scale-[0.98]`)을 느끼며 새 탭에서 블로그 글로 이동한다.
 3. **SNS 원클릭 공유**:
    - 유익한 포트폴리오라고 생각한 김지우는 우측 상단의 `[공유]` 아이콘을 터치한다.
    - 모바일 시스템 공유 창(Web Share API)이 열려 카카오톡 단체방에 바로 링크를 전송한다.
 
 ---
 
-## 4. 기술 스택 및 아키텍처 (Tech Stack & Architecture)
+## 4. 디자인 시스템 표준: shadcn/ui (`b6u0Tmjb6`) ✨ 신규 확정
 
-### 4.1 Frontend
+> **중요 원칙**: 앞으로 마이링크 프로젝트의 모든 신규 화면 및 컴포넌트 개발은 임의의 인라인 스타일링을 지양하고, **shadcn/ui 컴포넌트와 토큰 시스템을 표준으로 사용**합니다.
+
+### 4.1 프리셋 명세 (Preset Specification)
+- **Preset Code**: `b6u0Tmjb6`
+- **Style Archetype**: `base-rhea` (부드러운 곡률, 세련된 카드 보더, 최신 Base UI 기반)
+- **Base Color Palette**: `olive` (자연스럽고 편안한 올리브 그린 계열)
+- **Color System**: 차세대 **OKLCH** 시맨틱 색상 체계 적용
+- **Border Radius**: `--radius: 0.625rem` (`rounded-2xl` 및 `rounded-[24px]` 카드 지오메트리)
+- **Dark Mode**: 완벽한 다크 테마 지원 (`.dark` 클래스 스위칭 시 올리브 딥 차콜/블랙으로 전환)
+
+### 4.2 주요 컴포넌트 및 용도 매핑
+| 컴포넌트 | 위치 | 용도 및 역할 |
+|---|---|---|
+| **Button** | `@/components/ui/button` | 주요 CTA(Primary Olive), 2차 액션(Secondary), 외곽선(Outline), 위험(Destructive) 버튼 |
+| **Card** | `@/components/ui/card` | 대시보드 관리 패널, 통계 요약 카드, 모바일 링크 카드, 유튜브 플레이어 래퍼 |
+| **Badge** | `@/components/ui/badge` | 프리셋 표시, 링크 클릭수, 카테고리 태그, 온라인 상태 표시 |
+| **Avatar** | `@/components/ui/avatar` | 프로필 사진 렌더링, `AvatarFallback`(이니셜), `AvatarBadge`(온라인 점) |
+| **Tabs** | `@/components/ui/tabs` | 대시보드 메인 탭([링크], [프로필], [통계], [설정]) 및 뷰 스위처 |
+| **Input** | `@/components/ui/input` | 링크 제목/URL 입력창, 사용자 검색, 프로필 바이오 입력 |
+| **Switch** | `@/components/ui/switch` | 개별 링크 실시간 활성화/비활성화 토글 스위치 |
+| **Separator** | `@/components/ui/separator` | 프로필과 링크 영역 사이의 정갈한 구분선 |
+
+---
+
+## 5. 기술 스택 및 아키텍처 (Tech Stack & Architecture)
+
+### 5.1 Frontend
 - **Framework**: Next.js 16 (App Router, Turbopack)
 - **Language**: TypeScript
 - **Library**: React 19
-- **Styling**: Tailwind CSS v4, Lucide React (아이콘)
-- **Drag & Drop**: `@dnd-kit/core` 및 `@dnd-kit/sortable` (터치 및 데스크톱 드래그 앤 드롭 완벽 지원)
+- **Design System**: **shadcn/ui (Preset `b6u0Tmjb6`)**
+- **Core Primitives**: `@base-ui/react` (shadcn 공식 프리미티브)
+- **Styling**: Tailwind CSS v4, `tw-animate-css`, `class-variance-authority`
+- **Icons**: `lucide-react`
+- **Drag & Drop**: `@dnd-kit/core` 및 `@dnd-kit/sortable` (터치 및 데스크톱 드래그 앤 드롭 지원)
 - **Data Visualization**: `Recharts` 또는 경량 모던 SVG 차트 컴포넌트 (분석 대시보드용)
 
-### 4.2 Backend & Infrastructure (BaaS)
+### 5.2 Backend & Infrastructure (BaaS)
 - **BaaS**: Supabase 또는 Firebase
   - **인증 (Authentication)**: 소셜 로그인 (Google, GitHub) + 이메일/비밀번호 간편 가입
   - **데이터베이스 (Database)**: PostgreSQL (Supabase) 또는 Cloud Firestore (Firebase)
@@ -117,9 +148,9 @@
 
 ---
 
-## 5. 데이터 모델 정의 (Data Schema)
+## 6. 데이터 모델 정의 (Data Schema)
 
-### 5.1 Profiles (사용자 프로필)
+### 6.1 Profiles (사용자 프로필)
 | 필드명 | 타입 | 필수 여부 | 설명 |
 |---|---|:---:|---|
 | `id` | UUID (PK) | O | Auth 사용자 고유 식별자 |
@@ -127,13 +158,13 @@
 | `display_name` | String | O | 화면에 표시될 사용자 이름 (예: `이다영`) |
 | `bio` | Text | X | 한 줄 소개글 (최대 120자) |
 | `avatar_url` | String | X | 프로필 이미지 스토리지 URL |
-| `theme_id` | String | O | 적용된 테마 ID (기본값: `'minimal'`) |
+| `theme_id` | String | O | 적용된 테마 ID (기본값: `'olive-rhea'`) |
 | `social_links` | JSON | X | `{ instagram?: string, github?: string, youtube?: string, email?: string }` |
 | `total_views` | Integer | O | 프로필 누적 방문자 수 (기본값: `0`) |
 | `created_at` | Timestamp | O | 계정 생성 일시 |
 | `updated_at` | Timestamp | O | 프로필 수정 일시 |
 
-### 5.2 Links & Blocks (링크 및 미디어 블록)
+### 6.2 Links & Blocks (링크 및 미디어 블록)
 | 필드명 | 타입 | 필수 여부 | 설명 |
 |---|---|:---:|---|
 | `id` | UUID (PK) | O | 블록 고유 식별자 |
@@ -148,7 +179,7 @@
 | `created_at` | Timestamp | O | 블록 생성 일시 |
 | `updated_at` | Timestamp | O | 블록 수정 일시 |
 
-### 5.3 Analytics Logs (방문 및 클릭 로깅)
+### 6.3 Analytics Logs (방문 및 클릭 로깅)
 | 필드명 | 타입 | 필수 여부 | 설명 |
 |---|---|:---:|---|
 | `id` | UUID (PK) | O | 이벤트 고유 식별자 |
@@ -161,9 +192,9 @@
 
 ---
 
-## 6. 화면별 상세 기능 요구사항 (Functional Requirements)
+## 7. 화면별 상세 기능 요구사항 (Functional Requirements)
 
-### 6.1 회원가입, 로그인 및 핸들 선점 (Auth & Onboarding)
+### 7.1 회원가입, 로그인 및 핸들 선점 (Auth & Onboarding)
 1. **간편 인증**:
    - 구글 원클릭 로그인 및 이메일/비밀번호 회원가입 지원.
 2. **핸들(Username) 검증**:
@@ -174,11 +205,11 @@
 
 ---
 
-### 6.2 관리자 대시보드 (Admin Dashboard)
-대시보드는 **2단 분할 레이아웃(Split Screen)**으로 구성됩니다.
+### 7.2 관리자 대시보드 (Admin Dashboard)
+대시보드는 **2단 분할 레이아웃(Split Screen)**으로 구성되며, 모든 컨트롤은 shadcn/ui 컴포넌트로 구현됩니다.
 - **좌측 영역 (Editing Panel)**:
-  - 상단 메인 탭: `[링크/블록 관리 (Links)]` / `[프로필 & 테마 (Appearance)]` / `[통계 분석 (Analytics)]` / `[설정 (Settings)]`
-  - 링크/블록 추가, 인라인 수정, 드래그 앤 드롭 순서 변경
+  - 상단 메인 탭(shadcn Tabs): `[링크/블록 관리 (Links)]` / `[프로필 & 테마 (Appearance)]` / `[통계 분석 (Analytics)]` / `[설정 (Settings)]`
+  - 링크/블록 추가(shadcn Card, Input, Button), 인라인 수정, 드래그 앤 드롭 순서 변경
   - 변경 사항은 실시간 반영(Debounced Auto-save)
 - **우측 영역 (Sticky Live Mobile Preview)**:
   - 스마트폰 외곽선(iPhone/Android 프레임) 목업 제공.
@@ -187,7 +218,7 @@
 
 ---
 
-### 6.3 다양한 블록 및 링크 관리 (Blocks & Links Management)
+### 7.3 다양한 블록 및 링크 관리 (Blocks & Links Management)
 1. **블록 타입 선택 추가**:
    - `[+ 새 블록 추가]` 버튼 클릭 시 블록 선택 모달/드롭다운 노출:
      - 🔗 **일반 링크 (Standard Link)**: 제목 + 대상 URL 입력.
@@ -196,35 +227,31 @@
      - 🏷️ **섹션 구분 헤더 (Section Header)**: 링크들을 카테고리별로 묶어주는 텍스트 헤더 라벨.
 2. **인라인 에디팅 & 실시간 수정**:
    - 대시보드 카드 내에서 제목과 URL을 클릭하여 즉시 수정.
-3. **활성화/비활성화 토글**:
+3. **활성화/비활성화 토글 (shadcn Switch)**:
    - 스위치 컴포넌트로 링크를 삭제하지 않고 임시 숨김 처리.
 4. **드래그 앤 드롭 정렬 (Drag & Drop Reordering)**:
    - 핸들 아이콘(`:::`)을 드래그하여 직관적으로 노출 순서를 변경 (`order_index` 즉시 갱신).
 5. **개별 링크 통계 확인**:
-   - 링크 카드 우측에 누적 클릭수 배지 표시.
+   - 링크 카드 우측에 누적 클릭수 배지(shadcn Badge) 표시.
 
 ---
 
-### 6.4 프로필 및 테마 커스텀 (Appearance & Profile)
+### 7.4 프로필 및 테마 커스텀 (Appearance & Profile)
 1. **프로필 정보 편집**:
-   - 아바타 이미지 업로드 및 크롭/미리보기 (스토리지 저장).
+   - 아바타 이미지 업로드 및 크롭/미리보기 (shadcn Avatar, 스토리지 저장).
    - 표시 이름(Display Name) 및 한 줄 바이오(Bio) 입력 (최대 120자 글자 수 카운터).
 2. **소셜 아이콘 바 (Social Links Bar)**:
    - 인스타그램, 깃허브, 유튜브, X(트위터), 이메일 등 원하는 소셜 계정 URL 등록.
    - 공개 프로필의 프로필 사진 바로 아래 또는 하단에 모던한 원형 아이콘으로 노출.
-3. **5가지 프리셋 테마 선택**:
-   - **Modern Minimal**: 화이트/라이트 그레이 배경 + 깔끔한 블랙/차콜 라운드 버튼
-   - **Dark Mode**: 딥 블랙 캔버스 + 다크 그레이 반투명 보더 버튼
-   - **Glassmorphism**: 은은한 오로라 그라디언트 + 반투명 유리 질감 블러 카드
-   - **Neobrutalism**: 크림 도트 배경 + 볼드한 블랙 외곽선 및 비비드 하드 섀도우
-   - **Pastel Soft**: 부드러운 라벤더/민트/버터 파스텔 톤 버튼
+3. **테마 커스텀 & 다크 모드**:
+   - shadcn/ui Olive(b6u0Tmjb6) 테마를 기본으로 하되, 사용자의 취향에 따라 라이트/다크 모드 및 액센트 컬러 프리셋 선택 지원.
 
 ---
 
-### 6.5 실시간 분석 대시보드 (Analytics Dashboard)
+### 7.5 실시간 분석 대시보드 (Analytics Dashboard)
 대시보드의 `[통계 분석 (Analytics)]` 탭에서 사용자 링크 페이지의 트래픽을 한눈에 파악합니다.
 
-1. **상단 핵심 지표 요약 카드 (KPI Cards)**:
+1. **상단 핵심 지표 요약 카드 (shadcn Card KPIs)**:
    - **총 조회수 (Total Views)**: 공개 프로필 누적 방문자 수
    - **총 클릭수 (Total Clicks)**: 전체 링크 누적 클릭 횟수
    - **평균 클릭률 (Average CTR)**: `(총 클릭수 / 총 조회수) * 100` (%) 지표
@@ -238,7 +265,7 @@
 
 ---
 
-### 6.6 공개 링크 페이지 (Public Profile Page: `/[username]`)
+### 7.6 공개 링크 페이지 (Public Profile Page: `/[username]`)
 1. **모바일 최적화 반응형 뷰**:
    - 인스타그램/틱톡 인앱 브라우저 및 모든 모바일 디바이스에서 여백 깨짐 없이 최적화된 풀스크린 레이아웃.
 2. **인라인 미디어 재생**:
@@ -246,7 +273,7 @@
 3. **상단 공유 기능**:
    - 우측 상단 `[공유]` 버튼: 모바일에서는 Web Share API(`navigator.share`) 트리거, 데스크톱에서는 클립보드 링크 자동 복사 및 토스트 알림.
 4. **클릭 로깅 및 인터랙션**:
-   - 버튼 터치 시 쫀득한 스케일 다운 피드백(`active:scale-[0.98]`).
+   - shadcn 버튼 터치 시 쫀득한 스케일 다운 피드백(`active:scale-[0.98]`).
    - 새 탭(`target="_blank"`, `rel="noopener noreferrer"`)으로 안전하게 링크 이동.
    - 클릭 이벤트 발생 시 비동기 백그라운드로 `click_count` 및 유입 로그 기록.
 5. **마이링크 푸터**:
@@ -254,7 +281,7 @@
 
 ---
 
-## 7. 비기능적 요구사항 (Non-Functional Requirements)
+## 8. 비기능적 요구사항 (Non-Functional Requirements)
 
 1. **성능 및 반응 속도 (Performance)**:
    - Next.js의 SSR / ISR을 활용하여 공개 링크 페이지 초기 로딩 시간 1초 미만(FCP < 1.0s) 달성.
@@ -262,24 +289,26 @@
    - 프로필 이미지는 Next.js `<Image />` 최적화 및 WebP 포맷 지원.
 2. **모바일 및 웹 호환성**:
    - 인스타그램, 카카오톡, 라인, 틱톡 인앱 브라우저 내에서 자바스크립트 및 링크 이동이 정상 동작해야 함.
-3. **보안 (Security)**:
+3. **접근성 (Accessibility - A11y)**:
+   - shadcn/ui 및 Base UI의 내장 접근성 표준(WAI-ARIA, 키보드 네비게이션, 포커스 링 관리)을 준수.
+4. **보안 (Security)**:
    - Supabase/Firebase의 Row Level Security (RLS) 적용: 사용자는 오직 본인이 소유한 프로필과 링크만 수정/삭제 가능.
    - 누구나 공개된 활성 링크(`is_active == true`)는 읽기(Read) 가능.
    - URL 입력 필드에 `http://` 또는 `https://` 유효성 검증 및 XSS 살균.
-4. **SEO 및 오픈그래프 (OpenGraph)**:
+5. **SEO 및 오픈그래프 (OpenGraph)**:
    - 카카오톡이나 SNS에 링크 공유 시 해당 사용자의 프로필 사진, 표시 이름, 소개글이 카카오톡 미리보기 카드에 동적으로 노출되도록 Dynamic Metadata 구현.
 
 ---
 
-## 8. 개발 로드맵 및 마일스톤 (Milestones)
+## 9. 개발 로드맵 및 마일스톤 (Milestones)
 
 ```
-[Phase 1: 핵심 MVP 구축]
-├─ 1.1 DB 스키마 설계 및 Supabase/Firebase 환경 연동 (Profiles, Links, Analytics)
-├─ 1.2 인증 시스템 구현 (소셜 로그인 및 고유 핸들 선점)
-├─ 1.3 관리자 대시보드 (2단 분할 레이아웃 + 실시간 폰 목업)
-├─ 1.4 링크/블록 CRUD 및 드래그 앤 드롭 정렬 (@dnd-kit)
-├─ 1.5 프로필 수정 & 5종 프리셋 테마 적용
+[Phase 1: 기반 구축 & shadcn/ui 디자인 시스템 확립]
+├─ 1.1 shadcn/ui 프리셋 (b6u0Tmjb6, Olive, Base-Rhea) 프로젝트 초기화 및 구축 완료 [DONE]
+├─ 1.2 핵심 UI 컴포넌트 라이브러리(Button, Card, Badge, Avatar, Tabs, Input, Switch) 셋업 [DONE]
+├─ 1.3 DB 스키마 설계 및 Supabase/Firebase 환경 연동 (Profiles, Links, Analytics)
+├─ 1.4 인증 시스템 구현 (소셜 로그인 및 고유 핸들 선점)
+├─ 1.5 shadcn/ui 기반 2단 분할 관리자 대시보드 구현
 └─ 1.6 공개 페이지 (/[username]) 배포 및 모바일 최적화
 
 [Phase 1.5: 미디어 임베드 & 실시간 분석]
@@ -290,5 +319,5 @@
 [Phase 2: 확장 기능 (Next Step)]
 ├─ 3.1 오프라인용 QR 코드 자동 생성 및 다운로드 기능
 ├─ 3.2 음악 스트리밍 (Spotify/SoundCloud) 플레이어 임베드
-└─ 3.3 커스텀 배경 이미지 업로드 및 버튼 스타일 자유 커스터마이징
+└─ 3.3 테마 및 버튼 스타일 자유 커스터마이징 고도화
 ```
