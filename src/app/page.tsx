@@ -2,18 +2,24 @@
 
 import { useState } from "react";
 import {
-  Mail,
-  ExternalLink,
-  Sparkles,
   Heart,
-  Code2,
-  Layers,
-  GraduationCap,
-  Copy,
+  Search,
   Check,
-  MapPin,
-  Laptop,
+  Copy,
+  ArrowRight,
+  ExternalLink,
+  ChevronDown,
+  Globe,
+  ShoppingBag,
 } from "lucide-react";
+
+function NikeSwoosh({ className = "w-14 h-6 text-[#111111]" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 120 42" fill="currentColor">
+      <path d="M117.8 0C100.2 13.9 83.1 23.3 64.9 28.3C49.9 32.4 34.6 32.7 20.3 27.6C12.7 24.9 6.3 20.8 1.4 15.3C0.3 14 0 13.5 0 14.7C0 17.5 2.7 23.1 6.5 27.3C13.2 34.7 22.8 39.4 34.6 41.2C45.2 42.8 57.6 41.3 71.5 36.7C88.6 31 104.9 20 119.5 4.3C120.4 3.3 120.2 2 119.5 1.1C119 0.5 118.4 0.1 117.8 0Z" />
+    </svg>
+  );
+}
 
 function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -27,10 +33,11 @@ function GithubIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-export default function ProfilePage() {
-  const [likes, setLikes] = useState(42);
+export default function NikeProfilePage() {
+  const [likes, setLikes] = useState(1972); // 1972: Nike founded year easter egg
   const [liked, setLiked] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("ALL STACKS");
 
   const handleLike = () => {
     setLikes((prev) => prev + (liked ? -1 : 1));
@@ -47,211 +54,578 @@ export default function ProfilePage() {
     }
   };
 
-  const links = [
+  const filters = ["ALL STACKS", "FRONTEND", "SYSTEM", "DEV TOOLS"];
+
+  const products = [
     {
-      title: "GitHub 저장소",
-      desc: "프로젝트 코드와 커밋 기록 구경하기",
-      url: "https://github.com/0000bandi",
-      icon: GithubIcon,
-      gradient: "from-zinc-800 to-zinc-950 text-white",
-      bgHover: "hover:border-zinc-500",
+      id: "prod-1",
+      name: "React 19 & Next.js 16",
+      category: "Full-Stack Web Architecture",
+      badge: "JUST IN",
+      price: "100% PRODUCTION READY",
+      sale: false,
+      swatches: ["#111111", "#f5f5f5", "#007d48"],
+      tag: "FRONTEND",
+      desc: "Zero-latency server components, streaming rendering, and robust state management for athlete-grade web experiences.",
     },
     {
-      title: "기술 블로그",
-      desc: "개발하며 배운 생각과 인사이트 기록",
-      url: "https://velog.io",
-      icon: Code2,
-      gradient: "from-emerald-500 to-teal-600 text-white",
-      bgHover: "hover:border-emerald-400",
+      id: "prod-2",
+      name: "TypeScript (Strict Mode)",
+      category: "Static Type Engine",
+      badge: "ESSENTIAL",
+      price: "ZERO DEFECT DESIGN",
+      sale: false,
+      swatches: ["#1151ff", "#111111"],
+      tag: "SYSTEM",
+      desc: "Bulletproof compile-time safety and self-documenting code contracts that scale seamlessly under heavy workloads.",
     },
     {
-      title: "포트폴리오 & 이력서",
-      desc: "진행한 프로젝트와 상세 활동 내역",
-      url: "#",
-      icon: Layers,
-      gradient: "from-blue-500 to-indigo-600 text-white",
-      bgHover: "hover:border-blue-400",
+      id: "prod-3",
+      name: "Tailwind CSS Design System",
+      category: "Fluid Responsive Styling",
+      badge: "FEATURED",
+      price: "FREE FOR MEMBERS",
+      sale: true,
+      origPrice: "COMPLEX CSS",
+      swatches: ["#0a7281", "#111111", "#f5f5f5"],
+      tag: "FRONTEND",
+      desc: "Pure utility-first layout precision. Zero decorative fluff, mathematical 8px alignment, and micro-interaction polish.",
+    },
+    {
+      id: "prod-4",
+      name: "Python & Git Workflow",
+      category: "Automation & Version Control",
+      badge: "CORE GEAR",
+      price: "CONTINUOUS DELIVERY",
+      sale: false,
+      swatches: ["#111111", "#cacacb"],
+      tag: "DEV TOOLS",
+      desc: "Algorithmic thinking, clean commit history, and rapid automation scripting built to conquer complex problems.",
     },
   ];
 
-  const techStacks = [
-    { name: "React", bg: "bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 border-cyan-200 dark:border-cyan-800" },
-    { name: "Next.js", bg: "bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700" },
-    { name: "TypeScript", bg: "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800" },
-    { name: "Tailwind CSS", bg: "bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 border-sky-200 dark:border-sky-800" },
-    { name: "Python", bg: "bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800" },
-    { name: "Git & GitHub", bg: "bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 border-purple-200 dark:border-purple-800" },
-  ];
+  const filteredProducts =
+    activeFilter === "ALL STACKS"
+      ? products
+      : products.filter((p) => p.tag === activeFilter);
 
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 bg-slate-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 overflow-hidden font-sans">
-      {/* Decorative Aurora Background Glows */}
-      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-indigo-400/25 dark:bg-indigo-600/20 rounded-full blur-3xl pointer-events-none -z-10 animate-pulse" />
-      <div className="absolute top-1/3 -right-20 w-80 h-80 bg-pink-400/25 dark:bg-pink-600/20 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute bottom-10 left-1/3 w-96 h-96 bg-purple-400/20 dark:bg-purple-600/15 rounded-full blur-3xl pointer-events-none -z-10" />
-
-      {/* Main Glassmorphism Card */}
-      <div className="w-full max-w-lg backdrop-blur-xl bg-white/85 dark:bg-zinc-900/85 rounded-3xl p-6 sm:p-9 shadow-2xl shadow-indigo-500/10 border border-white/60 dark:border-zinc-800/80 flex flex-col items-center space-y-7 transition-all">
-        
-        {/* Status Badge */}
-        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 text-xs font-semibold text-emerald-600 dark:text-emerald-400 shadow-xs">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          성장하며 몰입하는 주니어 개발자
+    <div className="min-h-screen bg-white text-[#111111] font-sans antialiased selection:bg-[#111111] selection:text-white">
+      
+      {/* 1. Nike Utility Top Bar (Height ~36px, bg #f5f5f5) */}
+      <div className="w-full bg-[#f5f5f5] text-[#111111] text-[12px] font-medium h-9 px-4 sm:px-12 flex items-center justify-between border-b border-[#e5e5e5]">
+        <div className="flex items-center gap-4 text-[#707072]">
+          <span className="font-semibold text-[#111111]">DAYOUNG LEE</span>
+          <span className="hidden sm:inline">·</span>
+          <span className="hidden sm:inline">HANYANG UNIVERSITY</span>
+          <span className="hidden sm:inline">·</span>
+          <span className="hidden sm:inline">SEOUL, KR</span>
         </div>
+        <div className="flex items-center gap-4 font-medium text-[12px]">
+          <a
+            href="https://github.com/0000bandi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[#707072] transition-colors"
+          >
+            GitHub
+          </a>
+          <span>·</span>
+          <a
+            href="https://velog.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[#707072] transition-colors"
+          >
+            Blog
+          </a>
+          <span>·</span>
+          <button
+            onClick={handleCopyEmail}
+            className="hover:text-[#707072] transition-colors cursor-pointer"
+          >
+            {copiedEmail ? "Copied" : "Contact"}
+          </button>
+        </div>
+      </div>
 
-        {/* Profile Avatar */}
-        <div className="relative group">
-          <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 shadow-xl group-hover:scale-105 transition-transform duration-300">
-            <div className="w-full h-full rounded-full bg-white dark:bg-zinc-900 flex items-center justify-center p-1">
-              <div className="w-full h-full rounded-full bg-gradient-to-tr from-indigo-500/15 to-purple-500/20 flex flex-col items-center justify-center">
-                <span className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-pink-500 bg-clip-text text-transparent">
-                  다영
-                </span>
-              </div>
+      {/* 2. Nike Primary Nav (56-64px, White canvas, zero radius) */}
+      <header className="sticky top-0 z-40 bg-white border-b border-[#e5e5e5]">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-12 h-16 flex items-center justify-between">
+          
+          {/* Logo / Nike Swoosh */}
+          <div className="flex items-center gap-3">
+            <NikeSwoosh className="w-14 sm:w-16 h-7 text-[#111111]" />
+            <span className="text-xs font-bold tracking-widest uppercase text-[#707072] hidden md:inline">
+              ENGINEER EDITION
+            </span>
+          </div>
+
+          {/* Centered Primary Nav Links */}
+          <nav className="hidden md:flex items-center gap-8 font-medium text-[16px] text-[#111111]">
+            <a href="#hero" className="hover:text-[#707072] transition-colors">
+              New & Featured
+            </a>
+            <a href="#stacks" className="hover:text-[#707072] transition-colors border-b-2 border-[#111111] pb-0.5">
+              Tech Stack
+            </a>
+            <a href="#editorial" className="hover:text-[#707072] transition-colors">
+              Projects
+            </a>
+            <a href="#member" className="hover:text-[#707072] transition-colors">
+              Membership
+            </a>
+          </nav>
+
+          {/* Right Action Cluster */}
+          <div className="flex items-center gap-3">
+            {/* Search Pill */}
+            <div className="hidden sm:flex items-center bg-[#f5f5f5] rounded-full px-4 py-2 h-10 w-44 lg:w-56 text-[#707072] text-[14px]">
+              <Search className="w-4 h-4 mr-2 text-[#111111]" />
+              <span className="truncate">Search skills</span>
             </div>
-          </div>
-          <span className="absolute bottom-1 right-1 p-1.5 bg-white dark:bg-zinc-800 rounded-full shadow-md text-base border border-slate-100 dark:border-zinc-700">
-            ✨
-          </span>
-        </div>
 
-        {/* Name & Titles */}
-        <div className="text-center space-y-2">
-          <div className="flex items-center justify-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              이다영
+            {/* Circular Heart Button */}
+            <button
+              onClick={handleLike}
+              aria-label="Favorite"
+              className="w-10 h-10 rounded-full bg-[#f5f5f5] hover:bg-[#e5e5e5] flex items-center justify-center text-[#111111] transition-all active:scale-95 cursor-pointer relative"
+            >
+              <Heart
+                className={`w-4 h-4 ${
+                  liked ? "fill-[#d30005] text-[#d30005]" : "text-[#111111]"
+                }`}
+              />
+              {liked && (
+                <span className="absolute -top-1 -right-1 bg-[#111111] text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full">
+                  1
+                </span>
+              )}
+            </button>
+
+            {/* GitHub Primary Pill Button */}
+            <a
+              href="https://github.com/0000bandi"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#111111] hover:bg-[#333333] text-white text-[14px] font-medium px-5 py-2.5 rounded-full transition-all active:scale-95 flex items-center gap-1.5"
+            >
+              <GithubIcon className="w-4 h-4 text-white" />
+              <span className="hidden xs:inline">GitHub</span>
+            </a>
+          </div>
+
+        </div>
+      </header>
+
+      {/* 3. Sub-Nav Strip (PLP Style Hairline) */}
+      <div className="border-b border-[#e5e5e5] bg-white">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-12 py-3 flex items-center justify-between text-[14px] text-[#707072]">
+          <div className="flex items-center gap-2">
+            <span>Engineering</span>
+            <span>/</span>
+            <span>Hanyang Univ</span>
+            <span>/</span>
+            <span className="text-[#111111] font-medium">Dayoung Lee</span>
+          </div>
+          <div className="flex items-center gap-4 text-[#111111] font-medium text-[14px]">
+            <span className="hidden sm:inline text-[#707072]">
+              {products.length} Stacks Available
+            </span>
+            <button
+              onClick={handleCopyEmail}
+              className="flex items-center gap-1 hover:text-[#707072] cursor-pointer"
+            >
+              {copiedEmail ? (
+                <>
+                  <Check className="w-4 h-4 text-[#007d48]" />
+                  <span className="text-[#007d48]">Copied Email</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4" />
+                  <span>Copy Email</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Editorial Campaign Hero: Towering Futura Display Lockup burned into imagery */}
+      <section id="hero" className="max-w-[1440px] mx-auto px-4 sm:px-12 pt-8 pb-12">
+        <div className="relative w-full bg-[#111111] text-white overflow-hidden rounded-none min-h-[460px] sm:min-h-[560px] lg:min-h-[640px] flex flex-col justify-end p-6 sm:p-12 lg:p-16">
+          
+          {/* Background Stage: High-contrast athletic coder perspective */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-zinc-950/80 to-zinc-900 pointer-events-none" />
+          
+          {/* Geometric Accent Line */}
+          <div className="absolute top-8 left-8 sm:left-12 text-xs font-mono font-bold tracking-widest text-[#707072] uppercase">
+            DAYOUNG LEE // SS26 ARCHIVE
+          </div>
+
+          <div className="relative z-10 max-w-4xl space-y-4 sm:space-y-6">
+            
+            <p className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-[#9e9ea0]">
+              JUNIOR SOFTWARE ENGINEER · WEB & FRONTEND
+            </p>
+
+            {/* Towering 96px Futura Display Campaign Lockup */}
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.88] text-white">
+              BUILT TO
+              <br />
+              CREATE.
             </h1>
-            <span className="text-sm font-medium text-zinc-400 dark:text-zinc-500">
-              Dayoung Lee
-            </span>
-          </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900">
-              <Laptop className="w-3.5 h-3.5" /> Frontend & Web Developer
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 border border-purple-100 dark:border-purple-900">
-              <GraduationCap className="w-3.5 h-3.5" /> 한양대학교
-            </span>
-          </div>
-        </div>
+            <p className="text-base sm:text-xl text-[#cacacb] max-w-xl font-normal leading-relaxed pt-2">
+              타협 없는 기준과 수학적 정밀함으로,
+              <br />
+              아이디어를 실제로 동작하는 코드로 전환합니다.
+            </p>
 
-        {/* Bio Card */}
-        <div className="w-full p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-800/50 border border-slate-100 dark:border-zinc-800 text-center">
-          <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-300 leading-relaxed break-keep">
-            새로운 기술을 탐구하고 아이디어를 코드로 구현하는 것을 좋아합니다. 
-            더 나은 사용자 경험과 클린 코드를 고민하며 꾸준히 성장하고 있습니다. 💻✨
-          </p>
-        </div>
-
-        {/* Tech Stack Chips */}
-        <div className="w-full space-y-2.5">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider px-1">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
-            <span>Tech Stack & Interests</span>
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {techStacks.map((tech) => (
-              <span
-                key={tech.name}
-                className={`text-xs px-2.5 py-1 rounded-lg border font-medium ${tech.bg}`}
+            {/* Action Pill Pair */}
+            <div className="flex flex-wrap items-center gap-3 pt-4">
+              <a
+                href="#stacks"
+                className="bg-white hover:bg-[#f5f5f5] text-[#111111] text-[16px] font-medium px-8 py-3.5 rounded-full transition-all active:scale-95"
               >
-                {tech.name}
-              </span>
-            ))}
+                Explore Skills
+              </a>
+
+              <a
+                href="https://github.com/0000bandi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-transparent hover:bg-white/10 text-white border border-white text-[16px] font-medium px-8 py-3.5 rounded-full transition-all active:scale-95"
+              >
+                GitHub Profile
+              </a>
+            </div>
+
           </div>
+
         </div>
+      </section>
 
-        {/* Links List */}
-        <div className="w-full space-y-3">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider px-1">
-            <Layers className="w-3.5 h-3.5 text-purple-500" />
-            <span>Connect & Links</span>
-          </div>
-
-          <div className="space-y-2.5">
-            {links.map((link) => {
-              const Icon = link.icon;
+      {/* 5. Filter Strip (Nike Filter Chips) */}
+      <section className="max-w-[1440px] mx-auto px-4 sm:px-12 py-4">
+        <div className="flex items-center justify-between pb-4 border-b border-[#e5e5e5]">
+          <h2 className="text-xl sm:text-2xl font-medium tracking-tight uppercase text-[#111111]">
+            Featured Technologies ({filteredProducts.length})
+          </h2>
+          
+          {/* Filter Chips */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+            {filters.map((filter) => {
+              const isActive = activeFilter === filter;
               return (
-                <a
-                  key={link.title}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`group flex items-center justify-between p-3.5 rounded-2xl bg-white dark:bg-zinc-800/80 border border-slate-200/80 dark:border-zinc-700/60 shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 ${link.bgHover}`}
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`text-[14px] font-medium px-4 py-2 rounded-full border transition-all cursor-pointer whitespace-nowrap active:scale-95 ${
+                    isActive
+                      ? "bg-[#111111] text-white border-[#111111]"
+                      : "bg-white text-[#111111] border-[#cacacb] hover:border-[#111111]"
+                  }`}
                 >
-                  <div className="flex items-center gap-3.5">
-                    <div className={`p-2.5 rounded-xl bg-gradient-to-br ${link.gradient} shadow-sm group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <div className="text-left">
-                      <div className="text-sm font-bold text-zinc-800 dark:text-zinc-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                        {link.title}
-                      </div>
-                      <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                        {link.desc}
-                      </div>
-                    </div>
-                  </div>
-                  <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all" />
-                </a>
+                  {filter}
+                </button>
               );
             })}
           </div>
         </div>
+      </section>
 
-        {/* Interactive Actions: Email Copy & Cheer Button */}
-        <div className="w-full pt-2 flex flex-col sm:flex-row items-center gap-2.5">
-          {/* Email Copy Button */}
-          <button
-            onClick={handleCopyEmail}
-            className="w-full sm:flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-750 transition-colors shadow-xs active:scale-95 cursor-pointer"
-          >
-            {copiedEmail ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-emerald-500" />
-                <span className="text-emerald-600 dark:text-emerald-400">이메일 복사 완료!</span>
-              </>
-            ) : (
-              <>
-                <Mail className="w-3.5 h-3.5 text-indigo-500" />
-                <span>이메일 주소 복사</span>
-                <Copy className="w-3 h-3 text-zinc-400 ml-0.5" />
-              </>
-            )}
-          </button>
+      {/* 6. Product Card Grid: 1:1 on #f5f5f5, zero radius, zero shadow */}
+      <section id="stacks" className="max-w-[1440px] mx-auto px-4 sm:px-12 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-12">
+          {filteredProducts.map((product) => (
+            <div key={product.id} className="group flex flex-col rounded-none bg-white">
+              
+              {/* Product Image Area on Soft Cloud #f5f5f5 (1:1 Ratio) */}
+              <div className="relative w-full aspect-square bg-[#f5f5f5] flex flex-col items-center justify-center p-8 overflow-hidden rounded-none">
+                
+                {/* Promo Badge Top-Left */}
+                <div className="absolute top-4 left-4 bg-white border border-[#cacacb] text-[#111111] text-[12px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                  {product.badge}
+                </div>
 
-          {/* Cheer Like Button */}
-          <button
-            onClick={handleLike}
-            className={`w-full sm:w-auto flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-semibold transition-all shadow-xs active:scale-95 cursor-pointer ${
-              liked
-                ? "bg-rose-500 text-white shadow-rose-500/20"
-                : "bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50 hover:bg-rose-100 dark:hover:bg-rose-900/30"
-            }`}
-          >
-            <Heart
-              className={`w-3.5 h-3.5 ${
-                liked ? "fill-white" : "fill-rose-500 text-rose-500 animate-pulse"
-              }`}
-            />
-            <span>응원하기</span>
-            <span className="font-bold ml-0.5">{likes}</span>
-          </button>
+                {/* Minimalist Graphic Representation */}
+                <div className="w-full text-center space-y-2 group-hover:scale-105 transition-transform duration-300">
+                  <div className="text-5xl sm:text-6xl font-black text-[#111111] tracking-tighter">
+                    {product.name.split(" ")[0]}
+                  </div>
+                  <div className="text-xs font-mono font-bold tracking-widest text-[#707072] uppercase">
+                    MODULAR STACK
+                  </div>
+                </div>
+
+                {/* Bottom-right Quick Action */}
+                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="w-10 h-10 rounded-full bg-white text-[#111111] flex items-center justify-center shadow-sm">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Product Metadata directly below (No internal card padding, 8px gaps) */}
+              <div className="pt-3 space-y-1.5">
+                
+                {/* Swatch Dots */}
+                <div className="flex items-center gap-1.5 py-1">
+                  {product.swatches.map((color, idx) => (
+                    <span
+                      key={idx}
+                      className="w-3 h-3 rounded-full border border-[#cacacb] inline-block"
+                      style={{ backgroundColor: color }}
+                    />
+                  ))}
+                  <span className="text-[12px] text-[#707072] ml-1 font-medium">
+                    {product.swatches.length} Colors
+                  </span>
+                </div>
+
+                {/* Product Name */}
+                <h3 className="text-[16px] font-medium text-[#111111] tracking-tight">
+                  {product.name}
+                </h3>
+
+                {/* Category Subtitle */}
+                <p className="text-[14px] text-[#707072] font-medium">
+                  {product.category}
+                </p>
+
+                {/* Description */}
+                <p className="text-[13px] text-[#707072] line-clamp-2 leading-relaxed pt-0.5">
+                  {product.desc}
+                </p>
+
+                {/* Status / Price Row */}
+                <div className="pt-1 text-[16px] font-medium">
+                  {product.sale ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-[#d30005] font-semibold">{product.price}</span>
+                      <span className="text-[#707072] line-through text-[14px]">
+                        {product.origPrice}
+                      </span>
+                      <span className="text-[#d30005] text-[12px] font-bold">100% OFF</span>
+                    </div>
+                  ) : (
+                    <span className="text-[#111111]">{product.price}</span>
+                  )}
+                </div>
+
+              </div>
+
+            </div>
+          ))}
         </div>
+      </section>
 
-        {/* Footer */}
-        <div className="w-full pt-4 border-t border-slate-100 dark:border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between text-[11px] text-zinc-400 dark:text-zinc-500 gap-2">
-          <div className="flex items-center gap-1">
-            <MapPin className="w-3 h-3" />
-            <span>Seoul, Republic of Korea</span>
+      {/* 7. Full-Bleed Editorial Campaign Tile: "Never Settle" */}
+      <section id="editorial" className="max-w-[1440px] mx-auto px-4 sm:px-12 py-12">
+        <div className="relative w-full bg-[#111111] text-white p-8 sm:p-16 lg:p-20 overflow-hidden flex flex-col justify-end min-h-[380px] sm:min-h-[480px]">
+          
+          <div className="max-w-2xl space-y-4 relative z-10">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#9e9ea0]">
+              ENGINEERING PHILOSOPHY
+            </span>
+
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-none">
+              SPEED. PRECISION.
+              <br />
+              CLEAN EXECUTION.
+            </h2>
+
+            <p className="text-sm sm:text-base text-[#cacacb] leading-relaxed max-w-lg">
+              더 적은 코드로 더 많은 가치를 만듭니다. 복잡한 문제를 명확한 구조로 분해하고,
+              사용자에게 가장 빠르고 매끄러운 경험을 전달합니다.
+            </p>
+
+            {/* Bottom-left White Pill on Image */}
+            <div className="pt-4">
+              <a
+                href="https://github.com/0000bandi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center bg-white hover:bg-[#f5f5f5] text-[#111111] text-[14px] font-medium px-7 py-3 rounded-full transition-all active:scale-95"
+              >
+                <span>View Full Source Code</span>
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </a>
+            </div>
           </div>
-          <span>© 2026 Dayoung Lee. All rights reserved.</span>
+
         </div>
-      </div>
-    </main>
+      </section>
+
+      {/* 8. Nike Membership Section: Member Benefits Grid */}
+      <section id="member" className="max-w-[1440px] mx-auto px-4 sm:px-12 py-12 border-t border-[#e5e5e5]">
+        <div className="space-y-6">
+          
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl sm:text-3xl font-medium tracking-tight uppercase text-[#111111]">
+              Developer Membership
+            </h2>
+            <div className="text-xs font-mono font-bold text-[#707072]">
+              ID: DAYOUNG-2026-DEV
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* Benefit Card 1 */}
+            <div className="bg-[#f5f5f5] p-8 flex flex-col justify-between min-h-[260px]">
+              <div className="space-y-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#707072]">
+                  COMMUNICATION
+                </span>
+                <h3 className="text-xl font-bold text-[#111111] tracking-tight">
+                  Direct Line & Email
+                </h3>
+                <p className="text-sm text-[#707072] leading-relaxed">
+                  프로젝트 제안, 협업 문의, 커피챗 등 언제든 환영합니다.
+                </p>
+              </div>
+
+              <button
+                onClick={handleCopyEmail}
+                className="mt-6 self-start bg-[#111111] hover:bg-[#333333] text-white text-xs font-medium px-5 py-2.5 rounded-full transition-all active:scale-95 cursor-pointer"
+              >
+                {copiedEmail ? "Email Copied!" : "Copy Contact"}
+              </button>
+            </div>
+
+            {/* Benefit Card 2 */}
+            <div className="bg-[#f5f5f5] p-8 flex flex-col justify-between min-h-[260px]">
+              <div className="space-y-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#707072]">
+                  CODE VAULT
+                </span>
+                <h3 className="text-xl font-bold text-[#111111] tracking-tight">
+                  Public Repositories
+                </h3>
+                <p className="text-sm text-[#707072] leading-relaxed">
+                  깃허브에서 모든 오픈소스 프로젝트와 실험적 코드를 둘러보세요.
+                </p>
+              </div>
+
+              <a
+                href="https://github.com/0000bandi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 self-start bg-[#111111] hover:bg-[#333333] text-white text-xs font-medium px-5 py-2.5 rounded-full transition-all active:scale-95"
+              >
+                Visit GitHub
+              </a>
+            </div>
+
+            {/* Benefit Card 3 */}
+            <div className="bg-[#f5f5f5] p-8 flex flex-col justify-between min-h-[260px]">
+              <div className="space-y-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#707072]">
+                  COMMUNITY CHEER
+                </span>
+                <h3 className="text-xl font-bold text-[#111111] tracking-tight">
+                  Support the Builder
+                </h3>
+                <p className="text-sm text-[#707072] leading-relaxed">
+                  현재 {likes}명의 개발자와 동료들이 응원을 보냈습니다.
+                </p>
+              </div>
+
+              <button
+                onClick={handleLike}
+                className={`mt-6 self-start text-xs font-medium px-5 py-2.5 rounded-full transition-all active:scale-95 cursor-pointer flex items-center gap-1.5 ${
+                  liked
+                    ? "bg-[#d30005] text-white"
+                    : "bg-[#111111] text-white hover:bg-[#333333]"
+                }`}
+              >
+                <Heart className={`w-3.5 h-3.5 ${liked ? "fill-white" : ""}`} />
+                <span>{liked ? "Cheered! ❤️" : "Send Cheer"}</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 9. Nike 4-Column Footer with 1px Hairline */}
+      <footer className="border-t border-[#cacacb] bg-white pt-14 pb-16">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-12 space-y-12">
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-[14px]">
+            
+            <div className="space-y-3">
+              <h4 className="font-bold text-[#111111] uppercase tracking-wide">
+                Resources
+              </h4>
+              <ul className="space-y-2 text-[#707072] font-medium">
+                <li><a href="https://github.com/0000bandi" target="_blank" rel="noopener noreferrer" className="hover:text-[#111111]">GitHub Profile</a></li>
+                <li><a href="https://velog.io" target="_blank" rel="noopener noreferrer" className="hover:text-[#111111]">Engineering Blog</a></li>
+                <li><a href="#" className="hover:text-[#111111]">Notion Resume</a></li>
+                <li><a href="#" className="hover:text-[#111111]">Project Demos</a></li>
+              </ul>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="font-bold text-[#111111] uppercase tracking-wide">
+                Tech Stack
+              </h4>
+              <ul className="space-y-2 text-[#707072] font-medium">
+                <li><span>Next.js 16 (App Router)</span></li>
+                <li><span>React 19 & TypeScript</span></li>
+                <li><span>Tailwind CSS v4</span></li>
+                <li><span>Git & GitHub Actions</span></li>
+              </ul>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="font-bold text-[#111111] uppercase tracking-wide">
+                University
+              </h4>
+              <ul className="space-y-2 text-[#707072] font-medium">
+                <li><span>Hanyang University</span></li>
+                <li><span>Freshman Year</span></li>
+                <li><span>Seoul, Republic of Korea</span></li>
+                <li><span>Vibe Coding Course</span></li>
+              </ul>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="font-bold text-[#111111] uppercase tracking-wide">
+                Connect
+              </h4>
+              <ul className="space-y-2 text-[#707072] font-medium">
+                <li><button onClick={handleCopyEmail} className="hover:text-[#111111] text-left">dayoung@example.com</button></li>
+                <li><a href="https://github.com/0000bandi" target="_blank" rel="noopener noreferrer" className="hover:text-[#111111]">@0000bandi</a></li>
+                <li><span>Open to Collaboration</span></li>
+              </ul>
+            </div>
+
+          </div>
+
+          {/* Legal / Copyright Bottom Row */}
+          <div className="pt-8 border-t border-[#e5e5e5] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-[11px] text-[#707072] font-medium">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-[#111111]">© 2026 Dayoung Lee.</span>
+              <span>All Rights Reserved. Inspired by Nike Commerce Design System.</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 text-[#707072]">
+              <span className="hover:text-[#111111] cursor-pointer">Terms of Code</span>
+              <span>·</span>
+              <span className="hover:text-[#111111] cursor-pointer">Privacy Policy</span>
+              <span>·</span>
+              <span className="hover:text-[#111111] cursor-pointer">Nike Design System Spec</span>
+            </div>
+          </div>
+
+        </div>
+      </footer>
+
+    </div>
   );
 }
